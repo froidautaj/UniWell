@@ -1,0 +1,10 @@
+<div class="votes votes-styled w-auto">
+  <%#= turbo_frame_tag @post do %>
+    <div id="vote" class="upvotejs">
+      <%= link_to '', toggle_upvote_post_votes_path(@post), data: { 'turbo-method': :patch }, class: "upvote #{@post.upvoted?(current_user) ? 'upvote-on' : ''}", 'data-bs-toggle': 'tooltip', 'data-placement': 'right', title: 'This question is useful' %>
+      <span class="count"><%= @post.total_votes %></span>
+      <%= link_to '', toggle_downvote_post_votes_path(@post), data: { 'turbo-method': :patch }, class: "downvote #{@post.downvoted?(current_user) ? 'downvote-on' : ''}", 'data-bs-toggle': 'tooltip', 'data-placement': 'right', title: 'This question is not useful' %>
+<!--      <a class="star" data-bs-toggle="tooltip" data-placement="right" title="Bookmark this question."></a>-->
+    </div>
+  <%# end %>
+</div><!-- end votes -->

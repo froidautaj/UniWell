@@ -1,0 +1,23 @@
+<div class="subheader d-flex align-items-center justify-content-between">
+  <div class="subheader-title">
+    <h3 class="fs-16"><%= pluralize(@post.total_comments, 'Answer') %></h3>
+  </div><!-- end subheader-title -->
+  <div class="subheader-actions d-flex align-items-center lh-1">
+    <label class="fs-13 fw-regular me-1 mb-0">Order by</label>
+    <div class="w-100px">
+<!--      <select class="select-container">-->
+<!--        <option value="active">active</option>-->
+<!--        <option value="oldest">oldest</option>-->
+<!--        <option value="votes" selected="selected">votes</option>-->
+<!--      </select>-->
+
+      <%= content_tag(:select, class: 'select-container', id: 'sort-by') do %>
+        <% PostsController::SORT_BY_OPTIONS.each do |key, value| %>
+          <% selected = (params[:sort_by] == key || key ==  PagesController::SORT_BY_OPTIONS.keys.first) ? { selected: true } : {} %>
+          <%= content_tag(:option, key, value: key, **selected ) %>
+        <% end %>
+      <% end %>
+
+    </div>
+  </div><!-- end subheader-actions -->
+</div><!-- end subheader -->

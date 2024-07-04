@@ -1,0 +1,13 @@
+<div class="answer-wrap d-flex">
+  <div class="votes votes-styled w-auto">
+    <div id="vote2" class="upvotejs">
+      <a class="upvote upvote-on" data-bs-toggle="tooltip" data-placement="right" title="This question is useful"></a>
+      <span class="count">2</span>
+      <a class="downvote" data-bs-toggle="tooltip" data-placement="right" title="This question is not useful"></a>
+      <a class="star check <%= @post.accepted_comment_id == comment.id ? 'star-on' : '' %>" data-bs-toggle="tooltip" data-placement="right" title="The question owner accepted this answer"></a>
+    </div>
+  </div><!-- end votes -->
+  <div class="answer-body-wrap flex-grow-1">
+    <%= render 'comments/comment', comment: %>
+  </div><!-- end answer-body-wrap -->
+</div><!-- end answer-wrap -->

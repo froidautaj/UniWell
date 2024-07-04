@@ -1,0 +1,61 @@
+<div class="answer-body-wrap flex-grow-1">
+  <div class="answer-body">
+    <%= comment.content %>
+    <%= file_preview(comment) %>
+  </div><!-- end answer-body -->
+  <div class="question-post-user-action">
+    <div class="post-menu">
+      <div class="btn-group">
+        <button class="btn dropdown-toggle after-none" type="button" id="shareDropdownMenuTwo" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Share</button>
+        <div class="dropdown-menu dropdown--menu dropdown--menu-2 mt-2" aria-labelledby="shareDropdownMenuTwo">
+          <div class="py-3 px-4">
+            <h4 class="fs-15 pb-2">Share a link to this question</h4>
+            <form action="#" class="copy-to-clipboard">
+              <span class="text-success-message">Link Copied!</span>
+              <input type="text" class="form-control form--control form-control-sm copy-input" value="<%= post_url(@post) %>">
+              <div class="btn-box pt-2 d-flex align-items-center justify-content-between">
+                <a href="#" class="btn-text copy-btn">Copy link</a>
+                <ul class="social-icons social-icons-sm">
+                  <li><a href="#" class="bg-8 text-white shadow-none" title="Share link to this question on Facebook"><i class="la la-facebook"></i></a></li>
+                  <li><a href="#" class="bg-9 text-white shadow-none" title="Share link to this question on Twitter"><i class="la la-twitter"></i></a></li>
+                  <li><a href="#" class="bg-dark text-white shadow-none" title="Share link to this question on DEV"><i class="lab la-dev"></i></a></li>
+                </ul>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div><!-- btn-group -->
+<!--      <a href="#" class="btn">Edit</a>-->
+      <% if can? :edit, comment %>
+        <%= link_to 'Edit', post_path(@post, comment_id: comment.id), class: 'btn', data: { turbo: false } %>
+      <% end %>
+
+      <% if can? :destroy, comment %>
+        <%= link_to 'Delete', post_comment_path(@post, comment), data: { turbo_confirm: 'Are you sure?', "turbo-method": :delete }, class: 'btn' %>
+      <% end %>
+
+
+    </div><!-- end post-menu -->
+    <div class="media media-card user-media align-items-center">
+      <%= link_to profile_users_path(comment.user), class: 'media-img d-block', data: { turbo: false } do %>
+        <%= image_tag comment.user.avatar, alt: 'avatar' %>
+      <% end %>
+
+      <div class="media-body d-flex align-items-center justify-content-between">
+        <div>
+          <h5 class="pb-1">
+            <%= link_to comment.user.full_name, profile_users_path(comment.user), data: { turbo: false }  %>
+          </h5>
+          <div class="stats fs-12 d-flex align-items-center lh-18">
+            <%= user_badge(comment.user) %>
+          </div>
+        </div>
+        <small class="meta d-block text-end">
+          <span class="text-black d-block lh-18">answered</span>
+          <span class="d-block lh-18 fs-12"><%= time_ago_in_words(comment.created_at) %> ago</span>
+        </small>
+      </div>
+    </div><!-- end media -->
+
+  </div><!-- end question-post-user-action -->
+</div><!-- end answer-body-wrap -->

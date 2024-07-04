@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>New Comment Notification</title>
+  <style>
+      /* Include Bootstrap CSS */
+      @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      New Comment on Your Post
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Hello <%= @user.full_name %>,</h5>
+      <p class="card-text">You have received a new comment on your post titled "<%= @post.title %>":</p>
+      <blockquote class="blockquote">
+        <p class="mb-0"><%= @comment.content %></p>
+        <footer class="blockquote-footer">Comment by <cite title="Author"><%= @comment.user.full_name %></cite></footer>
+      </blockquote>
+      <a href="<%= post_url(@post) %>" class="btn btn-primary mt-3">View Post</a>
+    </div>
+    <div class="card-footer text-muted">
+      Thank you for using our platform!
+    </div>
+  </div>
+</div>
+</body>
+</html>

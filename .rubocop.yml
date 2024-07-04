@@ -1,0 +1,21 @@
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rails
+  - rubocop-rspec
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/**/*'
+AllCops:
+  DisabledByDefault: false
+  NewCops: enable
+  TargetRubyVersion: 3.1.2
+  Exclude:
+    - db/schema.rb
+    - node_modules/**/*
+    - vendor/**/*
+
+#Layout/FirstArgumentIndentation:
+#  Exclude:
+#    - spec/controllers/api/payments_controller_spec.rb

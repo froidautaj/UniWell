@@ -1,0 +1,19 @@
+<div class="answer-wrap d-flex">
+  <div class="votes votes-styled w-auto">
+    <%#= turbo_frame_tag comment do %>
+      <div id="vote2" class="upvotejs">
+        <%= link_to '', toggle_upvote_comment_votes_path(comment_id: comment.id), data: { 'turbo-method': :patch }, class: "upvote #{comment.upvoted?(current_user) ? 'upvote-on' : ''}", 'data-bs-toggle': 'tooltip', 'data-placement': 'right', title: 'This question is useful' %>
+        <span class="count"><%= comment.total_votes %></span>
+        <%= link_to '', toggle_downvote_comment_votes_path(comment_id: comment.id), data: { 'turbo-method': :patch }, class: "downvote #{comment.downvoted?(current_user) ? 'downvote-on' : ''}", 'data-bs-toggle': 'tooltip', 'data-placement': 'right', title: 'This question is not useful' %>
+        <% if current_user == @post.user %>
+          <%= link_to '', mark_as_accepted_post_path(@post, comment), data: { 'turbo-method': :patch, turbo_frame: 'comments' }, class: "star check #{@post.accepted_comment?(comment) ? 'star-on' : '' }", 'data-bs-toggle': 'tooltip', 'data-placement': 'right', title: "#{@post.accepted_comment?(comment) ? 'The question owner accepted this answer' : 'Mark as accepted answer'}" %>
+        <% elsif @post.accepted_comment == comment %>
+          <a class="star check star-on" data-bs-toggle="tooltip" data-placement="right" title="The question owner accepted this answer"></a>
+        <% end %>
+      </div>
+    <%# end %>
+  </div><!-- end votes -->
+  <div class="answer-body-wrap flex-grow-1">
+    <%= render 'comments/comment', comment: %>
+  </div><!-- end answer-body-wrap -->
+</div><!-- end answer-wrap -->

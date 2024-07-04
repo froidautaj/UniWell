@@ -1,0 +1,53 @@
+<div class="media media-card rounded-0 shadow-none mb-0 bg-transparent p-3 border-bottom border-bottom-gray">
+  <div class="votes text-center votes-2">
+    <div class="vote-block">
+      <span class="vote-counts d-block text-center pr-0 lh-20 fw-medium"><%= post.total_votes %></span>
+      <span class="vote-text d-block fs-13 lh-18">votes</span>
+    </div>
+    <div class="answer-block answered<%= post.accepted_comment_id.present? ? '-accepted' : '' %> my-2">
+      <span class="answer-counts d-block lh-20 fw-medium"><%= post.total_comments %></span>
+      <span class="answer-text d-block fs-13 lh-18">answers</span>
+    </div>
+    <div class="view-block">
+      <span class="view-counts d-block lh-20 fw-medium"><%= post.views %></span>
+      <span class="view-text d-block fs-13 lh-18">views</span>
+    </div>
+  </div>
+  <div class="media-body">
+    <h5 class="mb-2 fw-medium">
+      <%= link_to post, data: { turbo: false } do %>
+        <%= post.title %>
+      <% end %>
+    </h5>
+    <p class="mb-2 truncate lh-20 fs-15">
+      <%= post.content.to_plain_text.truncate_words(20) %>
+    </p>
+    <div class="tags">
+      <% post.tags&.each do |tag| %>
+        <a href="#" class="tag-link"><%= tag %></a>
+      <% end %>
+<!--      <a href="#" class="tag-link">bootstrap-4</a>-->
+<!--      <a href="#" class="tag-link">jquery</a>-->
+<!--      <a href="#" class="tag-link">select</a>-->
+    </div>
+    <div class="media media-card user-media align-items-center px-0 border-bottom-0 pb-0">
+      <%= link_to profile_users_path(post.user), class: 'media-img d-block' do %>
+        <%= image_tag post.user.avatar, alt: 'avatar' %>
+      <% end %>
+      <div class="media-body d-flex flex-wrap align-items-center justify-content-between">
+        <div>
+          <h5 class="pb-1">
+            <%= link_to post.user.full_name, profile_users_path(post.user) %>
+          </h5>
+          <div class="stats fs-12 d-flex align-items-center lh-18">
+            <%= user_badge(post.user) %>
+          </div>
+        </div>
+        <small class="meta d-block text-end">
+          <span class="text-black d-block lh-18">asked</span>
+          <span class="d-block lh-18 fs-12"><%= time_ago_in_words(post.created_at) %> ago</span>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

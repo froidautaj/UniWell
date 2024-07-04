@@ -1,0 +1,45 @@
+<%= turbo_frame_tag @post, target: 'reload' do %>
+<%= simple_form_for(@comment, url: @comment.new_record? ? post_comments_path(@post) : post_comment_path(@post, @comment), method: @comment.new_record? ? :post : :patch, data: { turbo: false }, html: { class: 'pt-3' }) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+<!--<form method="post" class="pt-3">-->
+  <div class="input-box">
+    <label class="fs-14 text-black lh-20 fw-medium">Body</label>
+    <div class="form-group">
+      <%= f.input_field :content, as: :text, class: 'form-control form--control form-control-sm fs-13 user-text-editor', rows: '6', placeholder: 'Your answer here...', value: f.object.content %>
+<!--      <textarea class="form-control form--control form-control-sm fs-13 user-text-editor" name="message" rows="6" placeholder="Your answer here...">Your answer here...</textarea>-->
+      <% if @comment.errors[:content] %>
+        <div class="text-danger"><%= @comment.errors[:content].join %></div>
+      <% end %>
+    </div>
+  </div>
+  <div class="input-box">
+    <label class="fs-14 text-black fw-medium">Image/File</label>
+    <div class="form-group">
+      <%= file_preview(@comment) %>
+      <div class="file-upload-wrap file-upload-layout-2">
+        <!--        <input type="file" name="files" class="file-upload-input">-->
+        <%= f.input_field :file, class: 'file-upload-input', accept: 'text/plain, image/jpeg, image/png, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document' %>
+        <% if @post.errors[:file] %>
+          <div class="text-danger fs-14"><%= @post.errors[:file].join %></div>
+        <% end %>
+        <span class="file-upload-text d-flex align-items-center justify-content-center"><i class="la la-cloud-upload me-2 fs-24"></i>Drop files here or click to upload.</span>
+      </div>
+    </div>
+
+  </div><!-- end input-box -->
+<!--  <button class="btn theme-btn theme-btn-sm" type="submit">Post Your Answer</button>-->
+  <% if user_signed_in? %>
+  <%= f.button :submit, 'Post Your Answer', class: 'btn theme-btn theme-btn-sm', data: { target: '_top' } %>
+  <% end %>
+<!--</form>-->
+
+<% end %>
+<% end %>
+
+<% unless user_signed_in? %>
+<p class="text-black text-center fs-15">Already have an account?
+  <%= link_to "Log in to leave a comment", new_user_session_path, class: 'text-color hover-underline' %>
+</p>
+<% end %>

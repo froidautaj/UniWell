@@ -1,0 +1,182 @@
+<!--======================================
+        START HEADER AREA
+    ======================================-->
+<header class="header-area bg-white border-bottom border-bottom-gray shadow-sm">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-2">
+        <div class="logo-box">
+          <%= link_to  root_path, class: 'logo', data: { turbo: false }, style: 'color: #26D8B2; font-weight: 900;' do %>
+            <%= image_tag 'app_logo.png', alt: 'logo', height: '48' %>
+            <%= t('app_name') %>
+          <% end %>
+          <div class="user-action">
+            <div class="search-menu-toggle icon-element icon-element-xs shadow-sm me-1" data-bs-toggle="tooltip" data-placement="top" title="Search">
+              <i class="la la-search"></i>
+            </div>
+            <% unless user_signed_in? %>
+            <div class="off-canvas-menu-toggle icon-element icon-element-xs shadow-sm me-1" data-bs-toggle="tooltip" data-placement="top" title="Main menu">
+              <i class="la la-bars"></i>
+            </div>
+            <% else %>
+            <div class="user-off-canvas-menu-toggle icon-element icon-element-xs shadow-sm" data-bs-toggle="tooltip" data-placement="top" title="User menu">
+              <i class="la la-user"></i>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div><!-- end col-lg-2 -->
+      <div class="col-lg-10">
+        <div class="menu-wrapper border-left border-left-gray ps-4 justify-content-end">
+          <nav class="menu-bar me-auto">
+            <ul>
+              <li class="is-mega-menu">
+                <%= link_to 'Home', root_path, data: { turbo: false }%>
+              </li>
+              <li>
+                <%= link_to 'Ask a question', new_post_path, data: { turbo: false } %>
+              </li>
+              <% if user_signed_in? && current_user.is_a?(SuperUser) %>
+                <li>
+                  <%= link_to 'Support', supports_path, data: { turbo: false } %>
+                </li>
+              <% end %>
+            </ul><!-- end ul -->
+          </nav><!-- end main-menu -->
+          <%= simple_form_for('', url: root_path, html: { class: 'me-4' }, data: { turbo: false }) do |f| %>
+            <div class="form-group mb-0">
+              <%= f.input :query, label: false, wrapper: false, input_html: { class: 'form-control form--control form--control-bg-gray', placeholder: 'Type your search words...' } %>
+              <%= button_tag type: 'submit', class: "form-btn" do %>
+                <i class="la la-search"></i>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="nav-right-button">
+            <% if user_signed_in? %>
+              <ul class="user-action-wrap d-flex align-items-center">
+                <li class="dropdown">
+                  <% if current_user.notifications.where(read: false).any? %>
+                    <span class="ball red ball-lg noti-dot"></span>
+                  <% end %>
+                  <a class="nav-link dropdown-toggle dropdown--toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="la la-bell"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown--menu dropdown-menu-right mt-3 keep-open" aria-labelledby="notificationDropdown">
+                    <h6 class="dropdown-header"><i class="la la-bell pe-1 fs-16"></i>Notifications</h6>
+                    <div class="dropdown-divider border-top-gray mb-0"></div>
+                    <div class="dropdown-item-list">
+                      <%= notifications_list %>
+                    </div>
+                    <% if can? :destroy, Notification %>
+                      <%= link_to notifications_path, class: 'dropdown-item pb-1 border-bottom-0 text-center btn-text fw-regular' do %>
+                        View All Notifications <i class="la la-arrow-right icon ms-1"></i>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </li>
+                <li class="dropdown user-dropdown">
+                  <a class="nav-link dropdown-toggle dropdown--toggle ps-2" href="#" id="userMenuDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="media media-card media--card shadow-none mb-0 rounded-0 align-items-center bg-transparent">
+                      <div class="media-img media-img-xs flex-shrink-0 rounded-full me-2">
+                        <%= image_tag current_user.avatar, alt: 'avatar', class: 'rounded-full' %>
+                      </div>
+                      <div class="media-body p-0 border-left-0">
+                        <h5 class="fs-14"><%= current_user.full_name %></h5>
+                      </div>
+                    </div>
+                  </a>
+                  <div class="dropdown-menu dropdown--menu dropdown-menu-right mt-3 keep-open" aria-labelledby="userMenuDropdown">
+                    <h6 class="dropdown-header">Hi, <%= current_user.full_name %></h6>
+                    <div class="dropdown-divider border-top-gray mb-0"></div>
+                    <div class="dropdown-item-list">
+                      <%= link_to profile_users_path, class: 'dropdown-item' do %>
+                        <i class="la la-user me-2"></i>Profile
+                      <% end %>
+                      <%= button_to destroy_user_session_path, class: 'dropdown-item', method: :delete do %>
+                        <i class="la la-power-off me-2"></i>Log out
+                      <% end %>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <%# end %>
+            <% else %>
+              <%= link_to new_user_session_path, class: 'btn theme-btn theme-btn-outline me-2', data: { turbo: false } do %>
+                <i class="la la-sign-in me-1"></i> Login
+               <% end %>
+              <%= link_to new_user_registration_path, class: 'btn theme-btn' do %>
+                <i class="la la-user me-1"></i> Sign up
+              <% end %>
+            <% end %>
+          </div><!-- end nav-right-button -->
+        </div><!-- end menu-wrapper -->
+      </div><!-- end col-lg-10 -->
+    </div><!-- end row -->
+  </div><!-- end container -->
+  <div class="off-canvas-menu custom-scrollbar-styled">
+    <div class="off-canvas-menu-close icon-element icon-element-sm shadow-sm" data-bs-toggle="tooltip" data-placement="left" title="Close menu">
+      <i class="la la-times"></i>
+    </div><!-- end off-canvas-menu-close -->
+    <ul class="generic-list-item off-canvas-menu-list pt-90px">
+      <li class="is-mega-menu">
+        <%= link_to 'Home', root_path %>
+      </li>
+      <li>
+        <%= link_to 'Ask a question', new_post_path, data: { turbo: false } %>
+      </li>
+    </ul>
+    <div class="off-canvas-btn-box px-4 pt-5 text-center">
+      <% unless user_signed_in? %>
+      <%= link_to new_user_session_path, class: 'btn theme-btn theme-btn-sm theme-btn-outline' do %>
+        <i class="la la-sign-in me-1"></i> Login
+      <% end %>
+      <span class="fs-15 fw-medium d-inline-block mx-2">Or</span>
+      <%= link_to new_user_registration_path, class: 'btn theme-btn theme-btn-sm' do %>
+        <i class="la la-user me-1"></i> Sign up
+      <% end %>
+    <% end %>
+    </div>
+  </div><!-- end off-canvas-menu -->
+  <div class="user-off-canvas-menu custom-scrollbar-styled">
+    <div class="user-off-canvas-menu-close icon-element icon-element-sm shadow-sm" data-bs-toggle="tooltip" data-placement="left" title="Close menu">
+      <i class="la la-times"></i>
+    </div><!-- end user-off-canvas-menu-close -->
+    <ul class="nav nav-tabs generic-tabs generic--tabs pt-90px ps-4 shadow-sm" id="myTab2" role="tablist">
+      <li class="nav-item"><div class="anim-bar"></div></li>
+      <li class="nav-item">
+        <a class="nav-link active" id="user-profile-menu-tab" data-bs-toggle="tab" href="#user-profile-menu" role="tab" aria-controls="user-profile-menu" aria-selected="true">Profile</a>
+      </li>
+    </ul>
+    <div class="tab-content pt-3" id="myTabContent2">
+      <div class="tab-pane fade show active" id="user-profile-menu" role="tabpanel" aria-labelledby="user-profile-menu-tab">
+        <div class="dropdown--menu shadow-none w-auto rounded-0">
+          <div class="dropdown-item-list">
+            <%= link_to profile_users_path, class: 'dropdown-item' do %>
+              <i class="la la-user me-2"></i>Profile
+            <% end %>
+            <%= button_to destroy_user_session_path, class: 'dropdown-item', method: :delete do %>
+              <i class="la la-power-off me-2"></i>Log out
+            <% end %>
+          </div>
+        </div>
+      </div><!-- end tab-pane -->
+    </div>
+  </div><!-- end user-off-canvas-menu -->
+  <div class="mobile-search-form">
+    <div class="d-flex align-items-center">
+      <form method="post" class="flex-grow-1 me-3">
+        <div class="form-group mb-0">
+          <input class="form-control form--control pl-40px" type="text" name="search" placeholder="Type your search words...">
+          <span class="la la-search input-icon"></span>
+        </div>
+      </form>
+      <div class="search-bar-close icon-element icon-element-sm shadow-sm">
+        <i class="la la-times"></i>
+      </div><!-- end off-canvas-menu-close -->
+    </div>
+  </div><!-- end mobile-search-form -->
+  <div class="body-overlay"></div>
+</header><!-- end header-area -->
+<!--======================================
+        END HEADER AREA
+======================================-->

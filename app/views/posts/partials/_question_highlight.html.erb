@@ -1,0 +1,28 @@
+<div class="question-highlight">
+  <div class="media media-card shadow-none rounded-0 mb-0 bg-transparent p-0">
+    <div class="media-body">
+      <h5 class="fs-20">
+        <%= @post.title %>
+      </h5>
+      <div class="meta d-flex flex-wrap align-items-center fs-13 lh-20 py-1">
+        <div class="pe-3">
+          <span>Asked</span>
+          <span class="text-black"><%= time_ago_in_words(@post.created_at) %> ago</span>
+        </div>
+        <div class="pe-3">
+          <span class="pe-1">Active</span>
+          <a href="#" class="text-black"><%= last_active(@post) %></a>
+        </div>
+        <div class="pe-3">
+          <span class="pe-1">Viewed</span>
+          <span class="text-black"><%= @post.views %> times</span>
+        </div>
+      </div>
+      <div class="tags">
+        <% @post.tags&.each do |tag| %>
+          <a href="#" class="tag-link"><%= tag %></a>
+        <% end %>
+      </div>
+    </div>
+  </div><!-- end media -->
+</div><!-- end question-highlight -->

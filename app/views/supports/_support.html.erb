@@ -1,0 +1,20 @@
+<div class="media media-card media--card align-items-center">
+  <div class="media-body border-left-0">
+    <h5 class="pb-1">
+      <%= support.name %>
+    </h5>
+    <small class="meta d-block lh-20 pb-1">
+      <span class="author text-gray"><%= support.message %></span>
+      <span class="px-1">-</span>
+      <span><%= time_ago_in_words(support.created_at) %> ago</span>
+    </small>
+    <small class="meta d-block lh-20">
+      <span class="pe-1 text-success fw-medium"><%= support.email %></span>
+    </small>
+
+    <small class="meta d-block lh-20">
+      <span class="pe-1 fw-medium"><%= support.phone_number %></span>
+      <%= link_to 'Delete', support, data: { turbo_confirm: 'Are you sure?', "turbo-method": :delete }, class: 'btn' %>
+    </small>
+  </div>
+</div><!-- end media -->

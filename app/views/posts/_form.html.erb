@@ -1,0 +1,101 @@
+<%= simple_form_for(@post, html: { class: 'card-body' }, data: { turbo: false }) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="input-box">
+    <label class="fs-14 text-black fw-medium mb-0">Question Title</label>
+    <p class="fs-13 pb-3 lh-20">Be specific and imagine you’re asking a question to another person</p>
+    <div class="form-group">
+<!--      <input class="form-control form--control" type="text" name="text" placeholder="e.g. Is there an R function for finding the index of an element in a vector?">-->
+      <%= f.input :title, label: false, wrapper: false,  input_html: { class: 'form-control form--control', placeholder: 'e.g. Is there an R function for finding the index of an element in a vector' } %>
+    </div>
+  </div><!-- end input-box -->
+  <div class="input-box">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <label class="fs-14 text-black fw-medium mb-0">Tags</label>
+        <p class="fs-13 pb-3 lh-20">Add up to 5 tags to describe what your question is about:</p>
+      </div>
+      <button type="button" class="popover-trigger btn border border-gray py-1 lh-18 px-2" data-container="body" data-bs-toggle="popover" data-placement="top">
+        <svg aria-hidden="true" class="svg-icon-color-gray" width="14" height="14"><path d="M7 1a6 6 0 100 12A6 6 0 007 1zm1.06 9.06c-.02.63-.48 1.02-1.1 1-.57-.02-1.03-.43-1.01-1.06.02-.63.5-1.04 1.08-1.02.6.02 1.05.45 1.03 1.08zm.73-3.07l-.47.3c-.2.15-.36.36-.44.6a3.6 3.6 0 00-.08.65c0 .04-.03.14-.16.14h-1.4c-.14 0-.16-.09-.16-.13-.01-.5.11-.99.36-1.42A4.6 4.6 0 017.7 6.07c.15-.1.21-.21.3-.33a1.14 1.14 0 00.02-1.48c-.22-.26-.46-.4-.92-.4-.45 0-.83.23-1.02.52-.19.3-.16.63-.16.94H4.2c0-1.17.31-1.92.98-2.36a3.5 3.5 0 011.83-.44c.88 0 1.58.16 2.2.62.58.42.88 1.02.88 1.82 0 .5-.17.9-.43 1.24-.15.2-.44.47-.86.79h-.01z"></path></svg>
+      </button>
+      <div class="generic-popover d-none">
+        <h4 class="fs-16 pb-1">How to tag</h4>
+        <p class="pb-2 fs-14">Tags help the right people find and answer your question.</p>
+        <ul class="generic-list-item generic-list-item-bullet">
+          <li class="lh-18 text-black-50">Identify your tags by completing the sentence, "My question is about…"</li>
+          <li class="lh-18 text-black-50">Include tags that are crucial to your question only, like <div class="tag-link">c#</div></li>
+          <li class="lh-18 text-black-50">Only include version numbers, like <div class="tag-link">c#-4.0</div>, when absolutely necessary</li>
+          <li class="lh-18 text-black-50">Use existing <a href="#" class="d-inline-block text-color hover-underline" target="_blank">popular tags</a></li>
+        </ul>
+        <p class="pb-1 fs-14">If you can’t find a tag:</p>
+        <p class="fs-14 text-black-50"><a href="#" class="text-color hover-underline" target="_blank">Create new tags</a> or post without it and <a href="#" class="text-color hover-underline" target="_blank">ask the community</a>
+          to create one for you.
+        </p>
+      </div><!-- end generic-popover -->
+    </div>
+    <div class="form-group">
+<!--      <input class="input-tags input--tags" type="text" name="tags" placeholder="e.g. javascript">-->
+      <%= f.input_field :tags,  class: 'input-tags input--tags', placeholder: 'e.g. study' %>
+    </div>
+  </div><!-- end input-box -->
+  <div class="input-box">
+    <label class="fs-14 text-black fw-medium mb-0">Category</label>
+    <p class="fs-13 pb-3 lh-20">Please choose the appropriate section so the question can be searched easily.</p>
+    <div class="form-group">
+      <%#= f.input :tags, label: false, wrapper: false,  input_html: { class: 'input-tags input--tags', placeholder: 'e.g. javascript' } %>
+      <%#= f.input_field :category_id, collection: @categories, class: 'select-container select--container', 'data-placeholder': 'Select a Category' %>
+      <%= f.association :category, collection: @categories, required: false, label: false, include_blank: false, input_html: { class: 'select-container select--container', 'data-placeholder': 'Select a Category' } , wrapper: false %>
+    </div>
+  </div><!-- end input-box -->
+  <div class="input-box">
+    <label class="fs-14 text-black fw-medium mb-0">Details</label>
+    <p class="fs-13 pb-3 lh-20">Include all the information someone would need to answer your question</p>
+    <div class="form-group">
+      <%= f.input_field :content, as: :text, class: 'form-control form--control user-text-editor', rows: '10', cols: '40' %>
+      <% if @post.errors[:content] %>
+        <div class="text-danger"><%= @post.errors[:content].join %></div>
+      <% end %>
+    </div>
+  </div><!-- end input-box -->
+  <div class="input-box">
+    <label class="fs-14 text-black fw-medium">Image/File</label>
+    <div class="form-group">
+      <%= file_preview(@post) %>
+      <div class="file-upload-wrap file-upload-layout-2">
+<!--        <input type="file" name="files" class="file-upload-input">-->
+        <%= f.input_field :file, class: 'file-upload-input', accept: 'text/plain, image/jpeg, image/png, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document' %>
+        <% if @post.errors[:file] %>
+              <div class="text-danger fs-14"><%= @post.errors[:file].join %></div>
+        <% end %>
+        <span class="file-upload-text d-flex align-items-center justify-content-center"><i class="la la-cloud-upload me-2 fs-24"></i>Drop files here or click to upload.</span>
+      </div>
+    </div>
+
+  </div><!-- end input-box -->
+  <div class="input-box pt-2">
+    <div class="form-group">
+      <div class="form-check custom-checkbox mb-1">
+        <%= f.input_field :notify_by_email, class: 'form-check-input', type: 'checkbox', value: '1', id: 'notifiedMe' %>
+        <label class="form-check-label" for="notifiedMe">
+          Get notified by email when someone answers this question.
+        </label>
+      </div>
+      <div class="form-check custom-checkbox mb-1">
+<!--        <input class="form-check-input" name="post[agree_terms]" type="checkbox" value="" id="youAgreeCheckBox">-->
+        <%= f.input_field :agree_terms, class: 'form-check-input', type: 'checkbox', value: '1' %>
+        <label class="form-check-label" for="youAgreeCheckBox">
+          By asking your question, you agree to the <%= link_to "Privacy Policy", user_policies_path, class: "text-color hover-underline" %>
+        </label>
+      </div>
+      <% if @post.errors[:agree_terms] %>
+        <div class="text-danger fs-14"><%= @post.errors[:agree_terms].join %></div>
+      <% end %>
+    </div>
+    <div class="btn-box">
+<!--      <button type="submit" class="btn theme-btn">Publish your question</button>-->
+      <%= f.button :submit, 'Publish your question', class: 'btn theme-btn' %>
+    </div>
+  </div>
+<!--</form>-->
+<% end %>

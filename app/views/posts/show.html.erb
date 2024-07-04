@@ -1,0 +1,64 @@
+<%= render 'posts/partials/hero_area' %>
+<!-- ================================
+         START QUESTION AREA
+================================= -->
+<section class="question-area pt-40px pb-40px">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="question-main-bar mb-50px">
+          <%= render partial: 'posts/partials/question_highlight' %>
+          <div class="question d-flex">
+            <%= render partial: 'posts/partials/votes' %>
+            <div class="question-post-body-wrap flex-grow-1">
+              <div class="question-post-body">
+                <%= @post.content %>
+<!--                Preview file-->
+                <%= file_preview(@post) %>
+              </div><!-- end question-post-body -->
+              <%= render 'posts/partials/post_user_actions' %>
+            </div><!-- end question-post-body-wrap -->
+          </div><!-- end question -->
+          <%= render 'posts/partials/subheader' %>
+          <% if user_signed_in? %>
+            <%= turbo_frame_tag 'comments' do %>
+              <%= render partial: 'posts/partials/comment', collection: @comments, as: :comment %>
+            <% end %>
+          <% else %>
+            <%= render partial: 'posts/partials/comment', collection: @comments, as: :comment %>
+          <% end %>
+          <div class="subheader">
+            <div class="subheader-title">
+              <h3 class="fs-16">Your Answer</h3>
+            </div><!-- end subheader-title -->
+          </div><!-- end subheader -->
+          <div class="post-form">
+            <%= render 'comments/form', local_variables: { post: @post, comment: @comment } %>
+          </div>
+        </div><!-- end question-main-bar -->
+      </div><!-- end col-lg-9 -->
+    <%= render 'posts/show_sidebar' %>
+    </div><!-- end row -->
+  </div><!-- end container -->
+</section><!-- end question-area -->
+<!-- ================================
+         END QUESTION AREA
+================================= -->
+
+<% content_for :script do %>
+  <script type="text/javascript" charset="utf-8">
+      $('#sort-by').on('change', function() {
+          const sort_by = $(this).val();
+          const url = new URL(window.location.href);
+          url.searchParams.set('sort_by', sort_by);
+          window.location.href = url.href;
+      });
+
+
+      const comment_id = new URLSearchParams(window.location.search).get('comment_id');
+      if (comment_id) {
+          // Scroll to bottom of the page
+          window.scrollTo(0, document.body.scrollHeight);
+      }
+  </script>
+<% end %>

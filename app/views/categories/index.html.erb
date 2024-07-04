@@ -1,0 +1,33 @@
+<!-- ================================
+         START QUESTION AREA
+================================= -->
+<section class="question-area pt-40px pb-40px">
+  <div class="container">
+    <div class="filters pb-3">
+      <div class="d-flex flex-wrap align-items-center justify-content-between pb-3">
+        <h3 class="fs-22 fw-medium">Categories</h3>
+        <%= link_to 'Ask Question', new_post_path, class: 'btn theme-btn theme-btn-sm'  %>
+      </div>
+    </div><!-- end filters -->
+    <div class="row">
+      <% @categories.each do |category| %>
+      <div class="col-lg-3 responsive-column-half">
+        <div class="media media-card p-3 align-items-center hover-y">
+          <div class="icon-element shadow-sm flex-shrink-0 me-3 border border-gray">
+            <i class="<%= CategoriesController::CATEGORY_ICON_MAP[category.name] %>" style="font-size: 43px; padding-top: 7px;"></i>
+          </div>
+          <div class="media-body">
+            <h5 class="fs-19 fw-medium mb-1">
+              <%= link_to category.name, root_path(category_id: category.id) %>
+            </h5>
+            <p class="fw-medium fs-15 text-black-50 lh-18"><%= category.posts_count %></p>
+          </div><!-- end media-body -->
+        </div><!-- end media -->
+      </div><!-- end col-lg-3 -->
+      <% end %>
+    </div><!-- end row -->
+  </div><!-- end container -->
+</section><!-- end question-area -->
+<!-- ================================
+         END QUESTION AREA
+================================= -->

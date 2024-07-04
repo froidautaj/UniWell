@@ -1,0 +1,48 @@
+<div class="card card-item">
+  <div class="card-body">
+    <h3 class="fs-17 pb-3">Related Questions</h3>
+    <div class="divider"><span></span></div>
+    <div class="sidebar-questions pt-3">
+      <% related_questions.each do |post| %>
+        <div class="media media-card media--card media--card-2">
+          <div class="media-body">
+            <h5>
+              <%= link_to post.title, post_path(post)  %>
+            </h5>
+            <small class="meta">
+              <span class="pe-1"> <%= time_ago_in_words(post.created_at) %> ago</span>
+              <span class="pe-1">. by</span>
+              <a href="#" class="author"><%= post.user.full_name %></a>
+            </small>
+          </div>
+        </div><!-- end media -->
+      <% end %>
+    </div><!-- end sidebar-questions -->
+  </div>
+</div><!-- end card -->
+<div class="card card-item">
+  <div class="card-body">
+    <h3 class="fs-17 pb-3">Trending Tags</h3>
+    <div class="divider"><span></span></div>
+    <div class="tags pt-4">
+      <% trending_tags[0..4].each do |tag| %>
+        <div class="tag-item">
+          <a href="#" class="tag-link tag-link-md"><%= tag.tag %></a>
+          <span class="item-multiplier fs-13"><span>×</span><span><%= tag.total %></span></span>
+        </div><!-- end tag-item -->
+      <% end %>
+      <div class="collapse" id="showMoreTags">
+        <% trending_tags[5..-1]&.each do |tag| %>
+          <div class="tag-item">
+            <a href="#" class="tag-link tag-link-md"><%= tag.tag %></a>
+            <span class="item-multiplier fs-13"><span>×</span><span><%= tag.total %></span></span>
+          </div><!-- end tag-item -->
+        <% end %>
+      </div><!-- end collapse -->
+      <a class="collapse-btn fs-13" data-bs-toggle="collapse" href="#showMoreTags" role="button" aria-expanded="false" aria-controls="showMoreTags">
+        <span class="collapse-btn-hide">Show more<i class="la la-angle-down ms-1 fs-11"></i></span>
+        <span class="collapse-btn-show">Show less<i class="la la-angle-up ms-1 fs-11"></i></span>
+      </a>
+    </div>
+  </div>
+</div><!-- end card -->

@@ -1,0 +1,3 @@
+class UniversityTutor < User
+
+end

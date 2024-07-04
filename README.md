@@ -14,4 +14,4 @@ https://edgeguides.rubyonrails.org/active_storage_overview.html
 
 1. brew install vips
 2. brew install imagemagick
-3. brew install ghostscript
+3. brew install poppler
